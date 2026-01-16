@@ -352,6 +352,89 @@ body {
   transform: translateY(-5px);
 }
 
+/* Featured card (Green Dots) */
+.flip-card.featured-card {
+  animation: featuredPulse 3s ease-in-out infinite;
+}
+
+@keyframes featuredPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.6));
+  }
+}
+
+.flip-card.featured-card:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.flip-card.featured-card .flip-card-front,
+.flip-card.featured-card .flip-card-back {
+  background: linear-gradient(135deg,
+    rgba(17, 24, 39, 0.85) 0%,
+    rgba(16, 185, 129, 0.15) 50%,
+    rgba(17, 24, 39, 0.85) 100%);
+  border: 2px solid var(--neon-green);
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3),
+              inset 0 0 30px rgba(16, 185, 129, 0.05);
+}
+
+.flip-card.featured-card .card-title {
+  background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.flip-card.featured-card .card-logo {
+  border: 2px solid var(--neon-green);
+  background: rgba(16, 185, 129, 0.1);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+  color: var(--neon-green);
+  font-weight: 700;
+}
+
+.flip-card.featured-card .service-tag {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--neon-green);
+}
+
+.flip-card.featured-card .client-tag {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--neon-green);
+}
+
+.flip-card.featured-card .card-link {
+  border-color: rgba(16, 185, 129, 0.3);
+  color: var(--neon-green);
+}
+
+.flip-card.featured-card .card-link:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+.flip-card.featured-card .discount-badge {
+  background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 .flip-card-inner {
   position: relative;
   width: 100%;

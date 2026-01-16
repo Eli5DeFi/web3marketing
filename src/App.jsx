@@ -23,7 +23,7 @@ function App() {
 
   // Filter vendors based on search and filters
   const filteredVendors = useMemo(() => {
-    return vendors.filter(vendor => {
+    const filtered = vendors.filter(vendor => {
       // Search filter
       const searchLower = searchTerm.toLowerCase();
       const matchesSearch = !searchTerm ||
@@ -41,6 +41,13 @@ function App() {
         selectedClients.some(client => vendor.clients.includes(client));
 
       return matchesSearch && matchesService && matchesClient;
+    });
+
+    // Always put Green Dots first
+    return filtered.sort((a, b) => {
+      if (a.name === 'Green Dots') return -1;
+      if (b.name === 'Green Dots') return 1;
+      return 0;
     });
   }, [searchTerm, selectedServices, selectedClients]);
 
@@ -246,7 +253,7 @@ function App() {
           filteredVendors.map(vendor => (
             <div
               key={vendor.id}
-              className={`flip-card ${flippedCards.has(vendor.id) ? 'flipped' : ''}`}
+              className={`flip-card ${flippedCards.has(vendor.id) ? 'flipped' : ''} ${vendor.name === 'Green Dots' ? 'featured-card' : ''}`}
               onClick={() => toggleFlip(vendor.id)}
             >
               <div className="flip-card-inner">
