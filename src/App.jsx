@@ -1,12 +1,25 @@
 import { useState, useEffect, useMemo } from 'react';
-import { vendors, allServices, allStatuses } from './data/vendors';
+import { vendors, allServices } from './data/vendors';
 import './App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedServices, setSelectedServices] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedClients, setSelectedClients] = useState([]);
   const [flippedCards, setFlippedCards] = useState(new Set());
+  const [serviceDropdownOpen, setServiceDropdownOpen] = useState(false);
+  const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
+
+  // Extract all unique clients
+  const allClients = useMemo(() => {
+    const clientsSet = new Set();
+    vendors.forEach(vendor => {
+      vendor.clients.forEach(client => {
+        clientsSet.add(client);
+      });
+    });
+    return [...clientsSet].sort();
+  }, []);
 
   // Filter vendors based on search and filters
   const filteredVendors = useMemo(() => {
@@ -23,13 +36,13 @@ function App() {
       const matchesService = selectedServices.length === 0 ||
         selectedServices.some(service => vendor.services.includes(service));
 
-      // Status filter
-      const matchesStatus = selectedStatus.length === 0 ||
-        selectedStatus.includes(vendor.status);
+      // Client filter
+      const matchesClient = selectedClients.length === 0 ||
+        selectedClients.some(client => vendor.clients.includes(client));
 
-      return matchesSearch && matchesService && matchesStatus;
+      return matchesSearch && matchesService && matchesClient;
     });
-  }, [searchTerm, selectedServices, selectedStatus]);
+  }, [searchTerm, selectedServices, selectedClients]);
 
   // Toggle service filter
   const toggleService = (service) => {
@@ -40,12 +53,12 @@ function App() {
     );
   };
 
-  // Toggle status filter
-  const toggleStatus = (status) => {
-    setSelectedStatus(prev =>
-      prev.includes(status)
-        ? prev.filter(s => s !== status)
-        : [...prev, status]
+  // Toggle client filter
+  const toggleClient = (client) => {
+    setSelectedClients(prev =>
+      prev.includes(client)
+        ? prev.filter(c => c !== client)
+        : [...prev, client]
     );
   };
 
@@ -53,7 +66,7 @@ function App() {
   const clearFilters = () => {
     setSearchTerm('');
     setSelectedServices([]);
-    setSelectedStatus([]);
+    setSelectedClients([]);
   };
 
   // Toggle card flip
@@ -74,7 +87,19 @@ function App() {
     return name.charAt(0).toUpperCase();
   };
 
-  const hasActiveFilters = searchTerm || selectedServices.length > 0 || selectedStatus.length > 0;
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.dropdown-container')) {
+        setServiceDropdownOpen(false);
+        setClientDropdownOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  const hasActiveFilters = searchTerm || selectedServices.length > 0 || selectedClients.length > 0;
 
   return (
     <div className="app">
@@ -118,44 +143,90 @@ function App() {
 
         {/* Filters */}
         <div className="filters">
-          {/* Status filter */}
-          <div className="filter-group">
-            <div className="filter-label">Status</div>
-            <div className="filter-tags">
-              {allStatuses.map(status => (
-                <button
-                  key={status}
-                  className={`filter-tag ${selectedStatus.includes(status) ? 'active' : ''}`}
-                  onClick={() => toggleStatus(status)}
-                >
-                  {status}
-                </button>
-              ))}
+          <div className="filters-row">
+            {/* Services dropdown */}
+            <div className="dropdown-container">
+              <label className="filter-label">Filter by Service</label>
+              <button
+                className="dropdown-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setServiceDropdownOpen(!serviceDropdownOpen);
+                  setClientDropdownOpen(false);
+                }}
+              >
+                {selectedServices.length === 0
+                  ? 'All Services'
+                  : `${selectedServices.length} selected`}
+                <span className="dropdown-arrow">{serviceDropdownOpen ? '▲' : '▼'}</span>
+              </button>
+              {serviceDropdownOpen && (
+                <div className="dropdown-menu">
+                  {allServices.map(service => (
+                    <label
+                      key={service}
+                      className="dropdown-option"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedServices.includes(service)}
+                        onChange={() => toggleService(service)}
+                      />
+                      <span className={selectedServices.includes(service) ? 'selected' : ''}>
+                        {service}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
 
-          {/* Services filter */}
-          <div className="filter-group">
-            <div className="filter-label">Services</div>
-            <div className="filter-tags">
-              {allServices.map(service => (
-                <button
-                  key={service}
-                  className={`filter-tag ${selectedServices.includes(service) ? 'active' : ''}`}
-                  onClick={() => toggleService(service)}
-                >
-                  {service}
-                </button>
-              ))}
+            {/* Clients dropdown */}
+            <div className="dropdown-container">
+              <label className="filter-label">Filter by Client</label>
+              <button
+                className="dropdown-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setClientDropdownOpen(!clientDropdownOpen);
+                  setServiceDropdownOpen(false);
+                }}
+              >
+                {selectedClients.length === 0
+                  ? 'All Clients'
+                  : `${selectedClients.length} selected`}
+                <span className="dropdown-arrow">{clientDropdownOpen ? '▲' : '▼'}</span>
+              </button>
+              {clientDropdownOpen && (
+                <div className="dropdown-menu">
+                  {allClients.map(client => (
+                    <label
+                      key={client}
+                      className="dropdown-option"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedClients.includes(client)}
+                        onChange={() => toggleClient(client)}
+                      />
+                      <span className={selectedClients.includes(client) ? 'selected' : ''}>
+                        {client}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
 
-          {/* Clear filters */}
-          {hasActiveFilters && (
-            <button className="clear-filters" onClick={clearFilters}>
-              Clear all filters
-            </button>
-          )}
+            {/* Clear filters */}
+            {hasActiveFilters && (
+              <button className="clear-filters" onClick={clearFilters}>
+                Clear all filters
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Results counter */}
@@ -188,9 +259,6 @@ function App() {
                       </div>
                       <div className="card-title-section">
                         <h3 className="card-title">{vendor.name}</h3>
-                        <span className={`card-status ${vendor.status.toLowerCase().replace('-', '')}`}>
-                          {vendor.status}
-                        </span>
                       </div>
                     </div>
 
