@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "find-db": "node scripts/find-database.js",
     "sync": "node scripts/sync-notion.js",
     "dev": "vite",
     "build": "vite build",
