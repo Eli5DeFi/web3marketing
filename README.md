@@ -38,6 +38,35 @@ npm run build
 npm run preview
 ```
 
+## 🔄 Notion Integration (Optional)
+
+This project can sync vendor data from a Notion database in real-time!
+
+### Setup
+
+See [NOTION_SETUP.md](./NOTION_SETUP.md) for detailed instructions.
+
+Quick start:
+1. Create a Notion integration at https://www.notion.so/my-integrations
+2. Get your database ID from the database URL
+3. Share the database with your integration
+4. Add to `.env`:
+   ```
+   NOTION_API_TOKEN=your-token
+   NOTION_DATABASE_ID=your-database-id
+   ```
+5. Run `npm run sync` to fetch latest data
+
+### Commands
+
+```bash
+# Sync data from Notion manually
+npm run sync
+
+# Build with fresh Notion data
+npm run build:notion
+```
+
 ## 🎯 Service Categories
 
 The platform includes agencies offering:

@@ -4,11 +4,15 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "sync": "node scripts/sync-notion.js",
     "dev": "vite",
     "build": "vite build",
+    "build:notion": "npm run sync && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@notionhq/client": "^5.7.0",
+    "dotenv": "^17.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
