@@ -149,6 +149,13 @@ async function fetchVendorsFromNotion(databaseId) {
                      getText(props['Contact Email']) ||
                      null;
 
+        // Get logo URL
+        const logo = getUrl(props['Logo']) ||
+                    getUrl(props['Agency Logo']) ||
+                    getUrl(props['Icon']) ||
+                    getUrl(props['Image']) ||
+                    null;
+
         return {
           id: index + 1,
           name,
@@ -159,7 +166,8 @@ async function fetchVendorsFromNotion(databaseId) {
           code,
           website,
           twitter,
-          email: email ? `mailto:${email}` : null
+          email: email ? `mailto:${email}` : null,
+          logo
         };
       })
       .filter(vendor => vendor !== null); // Remove any null entries

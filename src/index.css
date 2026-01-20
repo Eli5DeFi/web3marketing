@@ -151,16 +151,44 @@ body {
   padding: 1rem 1.5rem;
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
+  border: 2px solid var(--neon-blue);
   border-radius: 12px;
   text-align: center;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
+              0 0 40px rgba(59, 130, 246, 0.3),
+              inset 0 0 20px rgba(59, 130, 246, 0.1);
 }
 
 .guide-text {
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.95rem;
   line-height: 1.6;
-  margin: 0;
+  margin: 0 0 1rem 0;
+}
+
+.get-listed-button {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: rgba(139, 92, 246, 0.2);
+  border: 2px solid var(--neon-purple);
+  border-radius: 8px;
+  color: var(--neon-purple);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5),
+              0 0 40px rgba(139, 92, 246, 0.3),
+              inset 0 0 20px rgba(139, 92, 246, 0.1);
+  margin-top: 0.5rem;
+}
+
+.get-listed-button:hover {
+  background: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.7),
+              0 0 60px rgba(139, 92, 246, 0.5),
+              inset 0 0 30px rgba(139, 92, 246, 0.2);
+  transform: translateY(-2px);
 }
 
 .guide-text strong {
@@ -547,11 +575,14 @@ body {
 
 .service-tag {
   padding: 0.25rem 0.6rem;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.5);
   border-radius: 6px;
   font-size: 0.7rem;
   color: var(--neon-blue);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3),
+              inset 0 0 8px rgba(59, 130, 246, 0.1);
+  text-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
 }
 
 /* Card description */
@@ -603,11 +634,14 @@ body {
 
 .client-tag {
   padding: 0.3rem 0.65rem;
-  background: rgba(139, 92, 246, 0.1);
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.5);
   border-radius: 6px;
   font-size: 0.7rem;
   color: var(--neon-purple);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.3),
+              inset 0 0 8px rgba(139, 92, 246, 0.1);
+  text-shadow: 0 0 5px rgba(139, 92, 246, 0.5);
 }
 
 /* Card links */
