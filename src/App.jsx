@@ -139,6 +139,14 @@ function App() {
             💡 <strong>How to use:</strong> Click any card to flip and view client portfolio & contact links.
             Use search and filters to find agencies by services or clients they've worked with.
           </p>
+          <a
+            href="https://fir-wool-b06.notion.site/2ea8c11d7aa7808aa298ea5489cdf76c?pvs=105"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="get-listed-button"
+          >
+            📝 Get Listed
+          </a>
         </div>
       </header>
 
@@ -270,7 +278,11 @@ function App() {
                   <div className="card-content">
                     <div className="card-header">
                       <div className="card-logo">
-                        {getLogoInitial(vendor.name)}
+                        {vendor.logo ? (
+                          <img src={vendor.logo} alt={vendor.name} />
+                        ) : (
+                          getLogoInitial(vendor.name)
+                        )}
                       </div>
                       <div className="card-title-section">
                         <h3 className="card-title">{vendor.name}</h3>
@@ -305,7 +317,11 @@ function App() {
                   <div className="card-content">
                     <div className="card-header">
                       <div className="card-logo">
-                        {getLogoInitial(vendor.name)}
+                        {vendor.logo ? (
+                          <img src={vendor.logo} alt={vendor.name} />
+                        ) : (
+                          getLogoInitial(vendor.name)
+                        )}
                       </div>
                       <div className="card-title-section">
                         <h3 className="card-title">{vendor.name}</h3>
