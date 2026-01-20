@@ -167,12 +167,27 @@ async function fetchVendorsFromNotion(databaseId) {
           getText(props['Contact Email']) ||
           null;
 
-        // Get logo URL
-        const logo = getUrl(props['Logo']) ||
-          getUrl(props['Agency Logo']) ||
-          getUrl(props['Icon']) ||
-          getUrl(props['Image']) ||
-          null;
+        // Get logo URL - check page icon first, then properties
+        // Page icon can be a file upload or external URL
+        let logo = null;
+        if (page.icon) {
+          if (page.icon.type === 'file' && page.icon.file?.url) {
+            logo = page.icon.file.url;
+          } else if (page.icon.type === 'external' && page.icon.external?.url) {
+            logo = page.icon.external.url;
+          } else if (page.icon.type === 'emoji') {
+            // Skip emoji icons, they're not useful as logos
+            logo = null;
+          }
+        }
+        // Fallback to properties if no page icon
+        if (!logo) {
+          logo = getUrl(props['Logo']) ||
+            getUrl(props['Agency Logo']) ||
+            getUrl(props['Icon']) ||
+            getUrl(props['Image']) ||
+            null;
+        }
 
         return {
           id: index + 1,
