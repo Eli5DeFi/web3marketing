@@ -19,11 +19,11 @@ async function findDatabases() {
   try {
     console.log('🔍 Searching for databases...\n');
 
-    // Search for all databases
+    // Search for all databases (SDK v5 uses 'data_source' instead of 'database')
     const response = await notion.search({
       filter: {
         property: 'object',
-        value: 'database'
+        value: 'data_source'
       },
       page_size: 100
     });
@@ -56,8 +56,8 @@ async function findDatabases() {
     const vendorsDb = response.results.find(db => {
       const title = db.title?.[0]?.plain_text || '';
       return title.toLowerCase().includes('vendor') ||
-             title.toLowerCase().includes('agencies') ||
-             title.toLowerCase().includes('marketing');
+        title.toLowerCase().includes('agencies') ||
+        title.toLowerCase().includes('marketing');
     });
 
     if (vendorsDb) {

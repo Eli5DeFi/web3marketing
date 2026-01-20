@@ -32,8 +32,10 @@ async function fetchVendorsFromNotion(databaseId) {
   try {
     console.log('📥 Fetching vendors from Notion database...');
 
-    const response = await notion.databases.query({
-      database_id: databaseId,
+    // Notion SDK v5+ uses dataSources.query() instead of databases.query()
+    // The databaseId is now treated as a data_source_id
+    const response = await notion.dataSources.query({
+      data_source_id: databaseId,
       page_size: 100,
     });
 
@@ -77,11 +79,12 @@ async function fetchVendorsFromNotion(databaseId) {
         };
 
         // Try to find the name property (it might be called different things)
-        const name = getTitle(props['Name']) ||
-                     getTitle(props['Agency']) ||
-                     getTitle(props['Company']) ||
-                     getTitle(props['Agency Name']) ||
-                     getText(props['Name']);
+        const name = getTitle(props['Name, website']) ||
+          getTitle(props['Name']) ||
+          getTitle(props['Agency']) ||
+          getTitle(props['Company']) ||
+          getTitle(props['Agency Name']) ||
+          getText(props['Name']);
 
         // Skip if no name
         if (!name) {
@@ -91,18 +94,18 @@ async function fetchVendorsFromNotion(databaseId) {
 
         // Get services/categories
         const services = getMultiSelect(props['Services']) ||
-                        getMultiSelect(props['Service Categories']) ||
-                        getMultiSelect(props['Categories']) ||
-                        getMultiSelect(props['Service Type']) ||
-                        [];
+          getMultiSelect(props['Service Categories']) ||
+          getMultiSelect(props['Categories']) ||
+          getMultiSelect(props['Service Type']) ||
+          [];
 
         // Get clients (might be comma-separated text)
         let clients = [];
         const clientText = getText(props['Ex Clients']) ||
-                          getText(props['Clients']) ||
-                          getText(props['Notable Clients']) ||
-                          getText(props['Past Clients']) ||
-                          '';
+          getText(props['Clients']) ||
+          getText(props['Notable Clients']) ||
+          getText(props['Past Clients']) ||
+          '';
 
         if (clientText) {
           clients = clientText
@@ -113,48 +116,48 @@ async function fetchVendorsFromNotion(databaseId) {
 
         // Get description/commentary
         const description = getText(props['Description']) ||
-                           getText(props['Commentary']) ||
-                           getText(props['About']) ||
-                           getText(props['Details']) ||
-                           '';
+          getText(props['Commentary']) ||
+          getText(props['About']) ||
+          getText(props['Details']) ||
+          '';
 
         // Get status
         const status = getSelect(props['Status']) ||
-                      getSelect(props['Verification']) ||
-                      getSelect(props['Type']) ||
-                      'Unverified';
+          getSelect(props['Verification']) ||
+          getSelect(props['Type']) ||
+          'Unverified';
 
         // Get discount code
         const code = getText(props['Discount Code']) ||
-                    getText(props['Code']) ||
-                    getText(props['Special Offer']) ||
-                    getText(props['Promo']) ||
-                    null;
+          getText(props['Code']) ||
+          getText(props['Special Offer']) ||
+          getText(props['Promo']) ||
+          null;
 
         // Get URLs
         const website = getUrl(props['Website']) ||
-                       getUrl(props['URL']) ||
-                       getUrl(props['Link']) ||
-                       getUrl(props['Site']) ||
-                       null;
+          getUrl(props['URL']) ||
+          getUrl(props['Link']) ||
+          getUrl(props['Site']) ||
+          null;
 
         const twitter = getUrl(props['Twitter']) ||
-                       getUrl(props['X']) ||
-                       getUrl(props['Social']) ||
-                       getUrl(props['X Link']) ||
-                       null;
+          getUrl(props['X']) ||
+          getUrl(props['Social']) ||
+          getUrl(props['X Link']) ||
+          null;
 
         const email = getText(props['Email']) ||
-                     getText(props['Contact']) ||
-                     getText(props['Contact Email']) ||
-                     null;
+          getText(props['Contact']) ||
+          getText(props['Contact Email']) ||
+          null;
 
         // Get logo URL
         const logo = getUrl(props['Logo']) ||
-                    getUrl(props['Agency Logo']) ||
-                    getUrl(props['Icon']) ||
-                    getUrl(props['Image']) ||
-                    null;
+          getUrl(props['Agency Logo']) ||
+          getUrl(props['Icon']) ||
+          getUrl(props['Image']) ||
+          null;
 
         return {
           id: index + 1,
