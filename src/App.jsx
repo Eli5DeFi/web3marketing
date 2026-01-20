@@ -132,6 +132,14 @@ function App() {
         </div>
         <h1 className="main-title">Web3 Marketing Agencies</h1>
         <p className="subtitle">Discover vetted marketing agencies for your Web3 project</p>
+
+        {/* Usage Guide */}
+        <div className="usage-guide">
+          <p className="guide-text">
+            💡 <strong>How to use:</strong> Click any card to flip and view client portfolio & contact links.
+            Use search and filters to find agencies by services or clients they've worked with.
+          </p>
+        </div>
       </header>
 
       {/* Controls */}
@@ -289,10 +297,6 @@ function App() {
                         {vendor.code}
                       </div>
                     )}
-
-                    <div className="flip-hint">
-                      Click to see clients & links ↻
-                    </div>
                   </div>
                 </div>
 
@@ -362,10 +366,6 @@ function App() {
                           No links available
                         </span>
                       )}
-                    </div>
-
-                    <div className="flip-hint">
-                      Click to flip back ↻
                     </div>
                   </div>
                 </div>

@@ -1,4 +1,8 @@
 import { Client } from '@notionhq/client';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
 
 const NOTION_TOKEN = process.env.NOTION_API_TOKEN;
 

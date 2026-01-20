@@ -144,6 +144,30 @@ body {
   font-weight: 300;
 }
 
+/* Usage Guide */
+.usage-guide {
+  margin: 1.5rem auto 0;
+  max-width: 800px;
+  padding: 1rem 1.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.guide-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.guide-text strong {
+  color: var(--neon-cyan);
+  font-weight: 600;
+}
+
 /* Controls */
 .controls {
   max-width: 1400px;

@@ -6,7 +6,7 @@ export const vendors = [
     clients: ["Mantle", "Sui", "Sei", "Ether.fi", "Arcium", "YieldBasis", "Legion", "Redstone", "Citrea", "Walrus", "Mocaverse & more"],
     status: "Vetted",
     description: "1,500+ KOLs in database, including local KOLs (Asia, CIS, MENA, LatAM). Extensive portfolio. Offers strategic & creative approach to paid campaigns. Founded by Stacy Muur.",
-    code: "Code [VENDOR] → -10% agency fees for first collab",
+    code: null,
     website: "https://greendots.xyz",
     twitter: "https://x.com/GREEND0TS",
     email: null
