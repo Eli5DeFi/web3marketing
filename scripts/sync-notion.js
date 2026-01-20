@@ -63,6 +63,19 @@ async function fetchVendorsFromNotion(databaseId) {
           return '';
         };
 
+        // Extract URL link from title (Notion allows embedding links in title text)
+        const getTitleLink = (prop) => {
+          if (!prop) return null;
+          if (prop.title && prop.title.length > 0) {
+            // Check if there's a link in the text object
+            const link = prop.title[0]?.text?.link?.url;
+            // Also check href (alternative location)
+            const href = prop.title[0]?.href;
+            return link || href || null;
+          }
+          return null;
+        };
+
         const getMultiSelect = (prop) => {
           if (!prop || !prop.multi_select) return [];
           return prop.multi_select.map(item => item.name);
@@ -134,11 +147,13 @@ async function fetchVendorsFromNotion(databaseId) {
           getText(props['Promo']) ||
           null;
 
-        // Get URLs
+        // Get URLs - also check for link embedded in the title
         const website = getUrl(props['Website']) ||
           getUrl(props['URL']) ||
           getUrl(props['Link']) ||
           getUrl(props['Site']) ||
+          getTitleLink(props['Name, website']) ||
+          getTitleLink(props['Name']) ||
           null;
 
         const twitter = getUrl(props['Twitter']) ||
