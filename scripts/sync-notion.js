@@ -2,9 +2,13 @@ import { Client } from '@notionhq/client';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Load environment variables
+dotenv.config();
 
 // Initialize Notion client
 const NOTION_TOKEN = process.env.NOTION_API_TOKEN;
