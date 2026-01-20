@@ -212,6 +212,30 @@ async function fetchVendorsFromNotion(databaseId) {
   }
 }
 
+
+// Function to download image
+async function downloadImage(url, filename) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const logosDir = path.join(__dirname, '../public/images/logos');
+    if (!fs.existsSync(logosDir)) {
+      fs.mkdirSync(logosDir, { recursive: true });
+    }
+
+    const filePath = path.join(logosDir, filename);
+    fs.writeFileSync(filePath, buffer);
+    return `/images/logos/${filename}`;
+  } catch (error) {
+    console.error(`❌ Error downloading image for ${filename}:`, error.message);
+    return null;
+  }
+}
+
 async function main() {
   try {
     console.log('🚀 Starting Notion sync...\n');
@@ -233,12 +257,46 @@ async function main() {
     console.log(`📊 Using Database ID: ${DATABASE_ID}\n`);
 
     // Fetch vendors from Notion
-    const vendors = await fetchVendorsFromNotion(DATABASE_ID);
+    const rawVendors = await fetchVendorsFromNotion(DATABASE_ID);
 
-    if (vendors.length === 0) {
+    if (rawVendors.length === 0) {
       console.error('❌ No vendors found in Notion database');
       process.exit(1);
     }
+
+    console.log(`📥 Downloading logos for ${rawVendors.length} vendors...`);
+
+    // Process vendors to download images
+    const vendors = [];
+    for (const vendor of rawVendors) {
+      let localLogo = null;
+
+      if (vendor.logo) {
+        // Create safe filename from vendor name
+        const safeName = vendor.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        const ext = vendor.logo.includes('.png') ? '.png' :
+          vendor.logo.includes('.jpg') ? '.jpg' :
+            vendor.logo.includes('.jpeg') ? '.jpeg' :
+              vendor.logo.includes('.svg') ? '.svg' : '.png'; // default fallback
+
+        const filename = `${safeName}-${vendor.id}${ext}`;
+
+        // Download image
+        localLogo = await downloadImage(vendor.logo, filename);
+
+        // If download failed, keep original (though it will expire)
+        if (!localLogo) localLogo = vendor.logo;
+      }
+
+      vendors.push({
+        ...vendor,
+        logo: localLogo
+      });
+
+      // Add small delay to avoid rate limiting if many requests
+      if (vendor.id % 10 === 0) process.stdout.write('.');
+    }
+    console.log('\n');
 
     // Extract unique services
     const allServices = [...new Set(vendors.flatMap(v => v.services))].sort();
